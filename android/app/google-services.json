@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "314512834424",
+    "firebase_url": "https://haanzi-c7870.firebaseio.com",
+    "project_id": "haanzi-c7870",
+    "storage_bucket": "haanzi-c7870.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:314512834424:android:8b0ca4c4fb14776ce9928d",
+        "android_client_info": {
+          "package_name": "com.example.androidfirebaselogin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "314512834424-u7t1tvc214lub2lhu1g22b5bp3v01bre.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.androidfirebaselogin",
+            "certificate_hash": "90c6e9db33019f401c234095d5a393288aa27f30"
+          }
+        },
+        {
+          "client_id": "314512834424-aku8gp5fu1o3q0ur5be5ggs0idpi9q9l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAe0e1PoToNcR-r-EXsUKf3UTmNVFB-hAQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "314512834424-aku8gp5fu1o3q0ur5be5ggs0idpi9q9l.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "314512834424-7g40le2sc5fuqjmcb6hcuet4rituc3gc.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "haanzi.com.haanzilogin"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
