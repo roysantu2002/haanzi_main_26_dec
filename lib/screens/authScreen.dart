@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:haanzi_main/services/auth.dart';
 
 enum AuthMode { Signup, Login }
 
@@ -31,7 +32,7 @@ class AuthScreen extends StatelessWidget {
                   fit: BoxFit.cover,
                 ),
               ),
-              margin: EdgeInsets.fromLTRB(0.00, 20.00, 0.00, 0.00),
+              //margin: EdgeInsets.fromLTRB(0.00, 20.00, 0.00, 0.00),
               height: deviceSize.height,
               width: deviceSize.width,
               child: Column(
@@ -39,7 +40,7 @@ class AuthScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   SizedBox(
-                    height: deviceSize.height * 0.13,
+                    height: deviceSize.height * 0.20,
                   ),
                   Flexible(
                     flex: deviceSize.width > 600 ? 2 : 1,
@@ -65,7 +66,10 @@ class AuthCard extends StatefulWidget {
 }
 
 class _AuthCardState extends State<AuthCard> {
+  final AuthService _auth = AuthService();
+  bool loading = false;
   bool val = false;
+  String error = '';
   String providerReceiver = "";
   final GlobalKey<FormState> _formKey = GlobalKey();
   AuthMode _authMode = AuthMode.Login;
@@ -76,7 +80,7 @@ class _AuthCardState extends State<AuthCard> {
   var _isLoading = false;
   final _passwordController = TextEditingController();
 
-  void _submit() {
+  Future<void> _submit() async {
     if (!_formKey.currentState.validate()) {
       // Invalid!
       return;
@@ -86,9 +90,17 @@ class _AuthCardState extends State<AuthCard> {
       _isLoading = true;
     });
     if (_authMode == AuthMode.Login) {
-      // Log user in
+      dynamic result = await _auth.signInWithEmailAndPassword(
+          _authData['email'], _authData['password']);
+      if (result == null) {
+        setState(() => error = 'Couldn\'t signin');
+      }
     } else {
-      // Sign user up
+      dynamic result = await _auth.registerWithEmailAndPassword(
+          _authData['email'], _authData['password']);
+      if (result == null) {
+        setState(() => error = 'please supply a valid data');
+      }
     }
     setState(() {
       _isLoading = false;
@@ -130,9 +142,9 @@ class _AuthCardState extends State<AuthCard> {
       elevation: 8.0,
       child: Container(
         margin: EdgeInsets.all(12),
-        height: _authMode == AuthMode.Signup ? 340 : 280,
+        height: _authMode == AuthMode.Signup ? 380 : 260,
         constraints:
-            BoxConstraints(minHeight: _authMode == AuthMode.Signup ? 340 : 280),
+            BoxConstraints(minHeight: _authMode == AuthMode.Signup ? 380 : 260),
         width: deviceSize.width * 0.80,
         padding: EdgeInsets.all(8.0),
         child: Form(
@@ -147,6 +159,7 @@ class _AuthCardState extends State<AuthCard> {
                     if (value.isEmpty || !value.contains('@')) {
                       return 'Invalid email!';
                     }
+                    return null;
                   },
                   onSaved: (value) {
                     _authData['email'] = value;
@@ -160,6 +173,7 @@ class _AuthCardState extends State<AuthCard> {
                     if (value.isEmpty || value.length < 5) {
                       return 'Password is too short!';
                     }
+                    return null;
                   },
                   onSaved: (value) {
                     _authData['password'] = value;
@@ -175,6 +189,7 @@ class _AuthCardState extends State<AuthCard> {
                             if (value != _passwordController.text) {
                               return 'Passwords do not match!';
                             }
+                            return null;
                           }
                         : null,
                   ),
@@ -192,7 +207,7 @@ class _AuthCardState extends State<AuthCard> {
                     ],
                   ),
                 SizedBox(
-                  height: 20,
+                  height: 10,
                 ),
                 if (_isLoading)
                   CircularProgressIndicator()
@@ -219,7 +234,7 @@ class _AuthCardState extends State<AuthCard> {
                   child: Text(
                     'OR ${_authMode == AuthMode.Login ? 'SIGNUP' : 'LOGIN'}',
                     style: TextStyle(
-                      fontSize: 18.0,
+                      fontSize: 15.0,
                       letterSpacing: 1,
                       fontWeight: FontWeight.bold,
                       fontFamily: 'Roboto',

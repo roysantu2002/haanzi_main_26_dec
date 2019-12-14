@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:haanzi_main/screens/home/wrapper.dart';
+import 'package:haanzi_main/screens/wrapper.dart';
 import 'package:flutter/services.dart';
 
 Future main() async {
