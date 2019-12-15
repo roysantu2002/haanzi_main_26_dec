@@ -97,7 +97,7 @@ class _AuthCardState extends State<AuthCard> {
       }
     } else {
       dynamic result = await _auth.registerWithEmailAndPassword(
-          _authData['email'], _authData['password']);
+          _authData['email'], _authData['password'], providerReceiver);
       if (result == null) {
         setState(() => error = 'please supply a valid data');
       }
