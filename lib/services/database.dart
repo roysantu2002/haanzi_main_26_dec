@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:haanzi_main/common/common.dart';
+import 'package:location/location.dart';
 
 class DatabaseService {
   final String uid;
@@ -15,6 +17,7 @@ class DatabaseService {
       'uid': uid,
       'email': email,
       'mode': mode,
+      'date': currDate,
     });
   }
 }

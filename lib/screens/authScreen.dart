@@ -70,7 +70,7 @@ class _AuthCardState extends State<AuthCard> {
   bool loading = false;
   bool val = false;
   String error = '';
-  String providerReceiver = "";
+  String providerReceiver = "Receiver";
   final GlobalKey<FormState> _formKey = GlobalKey();
   AuthMode _authMode = AuthMode.Login;
   Map<String, String> _authData = {
