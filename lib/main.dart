@@ -26,16 +26,10 @@ import 'package:haanzi_main/screens/home.dart';
 import 'package:haanzi_main/screens/loading.dart';
 import 'package:haanzi_main/screens/authScreen.dart';
 import 'package:haanzi_main/screens/initial.dart';
+import 'package:haanzi_main/theme/haanziTheme.dart';
 
-void main() => runApp(MaterialApp(
-        theme: ThemeData(
-          // Define the default brightness and colors.
-          brightness: Brightness.light,
-          primaryColor: Color(0xff005582),
-          accentColor: Color(0xff00C2C7),
-        ),
-        initialRoute: '/',
-        routes: {
-          '/': (context) => Loading(),
-          '/home': (context) => MyApp(),
-        }));
+void main() =>
+    runApp(MaterialApp(theme: basicTheme(), initialRoute: '/', routes: {
+      '/': (context) => Loading(),
+      '/home': (context) => MyApp(),
+    }));

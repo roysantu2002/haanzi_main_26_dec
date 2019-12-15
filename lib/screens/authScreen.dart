@@ -226,9 +226,9 @@ class _AuthCardState extends State<AuthCard> {
                     ),
                     padding:
                         EdgeInsets.symmetric(horizontal: 30.0, vertical: 8.0),
-                    color: Color(0xff005582),
+                    color: Theme.of(context).buttonColor,
                     //color: Theme.of(context).primaryColor,
-                    textColor: Theme.of(context).primaryTextTheme.button.color,
+                    //textColor: Theme.of(context).textTheme.headline,
                   ),
                 FlatButton(
                   child: Text(
