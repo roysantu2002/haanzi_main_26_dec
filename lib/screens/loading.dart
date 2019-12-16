@@ -11,8 +11,8 @@ class _LoadingState extends State<Loading> {
   void setupHaanzi() async {
     await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     Future.delayed(Duration(seconds: 1), () {
-      //Navigator.pushReplacementNamed(context, '/home', arguments: {});
       Navigator.pushReplacementNamed(context, '/home', arguments: {});
+      //Navigator.pushReplacementNamed(context, '/wrapper', arguments: {});
     });
   }
 

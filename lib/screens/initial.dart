@@ -3,6 +3,7 @@ import 'package:haanzi_main/services/auth.dart';
 import 'package:haanzi_main/models/user.dart';
 import 'package:provider/provider.dart';
 import 'package:haanzi_main/screens/wrapper.dart';
+import 'package:haanzi_main/theme/haanziTheme.dart';
 
 void main() => runApp(MyApp());
 
@@ -13,6 +14,7 @@ class MyApp extends StatelessWidget {
     return StreamProvider<User>.value(
       value: AuthService().user,
       child: MaterialApp(
+        theme: basicTheme(),
         home: Wrapper(),
       ),
     );

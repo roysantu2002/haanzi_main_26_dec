@@ -22,14 +22,35 @@ class MyApp extends StatelessWidget {
 */
 
 import 'package:flutter/material.dart';
-import 'package:haanzi_main/screens/home.dart';
 import 'package:haanzi_main/screens/loading.dart';
-import 'package:haanzi_main/screens/authScreen.dart';
 import 'package:haanzi_main/screens/initial.dart';
-import 'package:haanzi_main/theme/haanziTheme.dart';
 
-void main() =>
-    runApp(MaterialApp(theme: basicTheme(), initialRoute: '/', routes: {
-      '/': (context) => Loading(),
-      '/home': (context) => MyApp(),
-    }));
+void main() => runApp(MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(
+            primaryColor: Colors.purple[800],
+            accentColor: Colors.amber,
+            accentColorBrightness: Brightness.dark),
+        initialRoute: '/',
+        routes: {
+          '/': (context) => Loading(),
+          '/home': (context) => MyApp(),
+        }));
+
+/*void main() => runApp(MyApp());
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(
+            primaryColor: Colors.purple[800],
+            accentColor: Colors.amber,
+            accentColorBrightness: Brightness.dark),
+        routes: {
+          '/': (context) => Loading(),
+          '/home': (context) => MyApp(),
+        });
+  }
+}*/
