@@ -1,11 +1,17 @@
 import 'package:haanzi_main/services/auth.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'dart:io';
+import 'package:path/path.dart';
 
 class Profile extends StatefulWidget {
   @override
-  MapScreenState createState() => MapScreenState();
+  //MapScreenState createState() => MapScreenState();
 
   final AuthService _auth = AuthService();
+
+  _ProfileScreenState createState() => _ProfileScreenState();
 }
 /*
 
@@ -33,8 +39,10 @@ class Profile extends StatefulWidget {
 }
 */
 
-class MapScreenState extends State<Profile>
+class _ProfileScreenState extends State<Profile>
     with SingleTickerProviderStateMixin {
+  File _image;
+
   bool _status = true;
   final FocusNode myFocusNode = FocusNode();
 
@@ -47,7 +55,34 @@ class MapScreenState extends State<Profile>
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
+
+    Future getImage() async {
+      var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+
+      setState(() {
+        _image = image;
+        print('Image Path $_image');
+      });
+    }
+
+    Future uploadPic(BuildContext context) async {
+      String fileName = basename(_image.path);
+      StorageReference firebaseStorageRef =
+          FirebaseStorage.instance.ref().child(fileName);
+      StorageUploadTask uploadTask = firebaseStorageRef.putFile(_image);
+      StorageTaskSnapshot taskSnapshot = await uploadTask.onComplete;
+      setState(() {
+        print("Profile Picture uploaded");
+        Scaffold.of(context)
+            .showSnackBar(SnackBar(content: Text('Profile Picture Uploaded')));
+      });
+    }
+
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Set Profile'),
+      ),
+
       // resizeToAvoidBottomInset: false,
       body: Stack(
         children: <Widget>[
@@ -67,17 +102,7 @@ class MapScreenState extends State<Profile>
                             padding: EdgeInsets.only(left: 20.0, top: 30.0),
                             child: new Row(
                               //crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
-                                Padding(
-                                  padding: EdgeInsets.only(left: 25.0),
-                                  child: new Text('PROFILE',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 20.0,
-                                          fontFamily: 'sans-serif-light',
-                                          color: Colors.black)),
-                                )
-                              ],
+                              children: <Widget>[],
                             )),
                         Padding(
                           padding: EdgeInsets.only(top: 20.0),
@@ -88,16 +113,22 @@ class MapScreenState extends State<Profile>
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
                                 new Container(
-                                    width: 130.0,
-                                    height: 130.0,
-                                    decoration: new BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      image: new DecorationImage(
-                                        image: new ExactAssetImage(
-                                            'images/as.png'),
-                                        fit: BoxFit.cover,
-                                      ),
-                                    )),
+                                  child: ClipOval(
+                                    child: new SizedBox(
+                                      width: 130.0,
+                                      height: 130.0,
+                                      child: (_image != null)
+                                          ? Image.file(
+                                              _image,
+                                              fit: BoxFit.fill,
+                                            )
+                                          : Image.asset(
+                                              'images/as.png',
+                                              fit: BoxFit.fill,
+                                            ),
+                                    ),
+                                  ),
+                                ),
                               ],
                             ),
                             Padding(
@@ -110,9 +141,14 @@ class MapScreenState extends State<Profile>
                                       backgroundColor:
                                           Theme.of(context).primaryColor,
                                       radius: 25.0,
-                                      child: new Icon(
-                                        Icons.camera_alt,
-                                        color: Colors.white,
+                                      child: IconButton(
+                                        icon: new Icon(
+                                          Icons.camera_alt,
+                                          size: 30.0,
+                                        ),
+                                        onPressed: () {
+                                          getImage();
+                                        },
                                       ),
                                     )
                                   ],
@@ -160,7 +196,7 @@ class MapScreenState extends State<Profile>
                 onPressed: () {
                   setState(() {
                     _status = true;
-                    FocusScope.of(context).requestFocus(new FocusNode());
+                    //FocusScope.of(context).requestFocus(new FocusNode());
                   });
                 },
                 shape: new RoundedRectangleBorder(
@@ -180,7 +216,7 @@ class MapScreenState extends State<Profile>
                 onPressed: () {
                   setState(() {
                     _status = true;
-                    FocusScope.of(context).requestFocus(new FocusNode());
+                    //FocusScope.of(context).requestFocus(new FocusNode());
                   });
                 },
                 shape: new RoundedRectangleBorder(
