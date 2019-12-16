@@ -88,11 +88,76 @@ class _ProfileScreenState extends State<Profile>
         children: <Widget>[
           SingleChildScrollView(
             child: Container(
-              margin: EdgeInsets.only(top: 100),
+              //margin: EdgeInsets.fromLTRB(0.00, 20.00, 0.00, 0.00),
               height: deviceSize.height,
               width: deviceSize.width,
               child: Column(
                 children: <Widget>[
+                  new Container(
+                    //height: 200.0,
+                    color: Colors.white,
+                    child: new Column(
+                      children: <Widget>[
+                        Padding(
+                            padding: EdgeInsets.only(left: 10.0, top: 20.0),
+                            child: new Row(
+                              //crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[],
+                            )),
+                        Padding(
+                          padding: EdgeInsets.only(top: 10.0),
+                          child:
+                              new Stack(fit: StackFit.loose, children: <Widget>[
+                            new Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                new Container(
+                                  child: ClipOval(
+                                    child: new SizedBox(
+                                      width: 130.0,
+                                      height: 130.0,
+                                      child: (_image != null)
+                                          ? Image.file(
+                                              _image,
+                                              fit: BoxFit.fill,
+                                            )
+                                          : Image.asset(
+                                              'images/as.png',
+                                              fit: BoxFit.fill,
+                                            ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Padding(
+                                padding:
+                                    EdgeInsets.only(top: 90.0, right: 100.0),
+                                child: new Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    new CircleAvatar(
+                                      backgroundColor:
+                                          Theme.of(context).primaryColor,
+                                      radius: 25.0,
+                                      child: IconButton(
+                                        icon: new Icon(
+                                          Icons.camera_alt,
+                                          size: 30.0,
+                                        ),
+                                        onPressed: () {
+                                          getImage();
+                                        },
+                                      ),
+                                    )
+                                  ],
+                                )),
+                          ]),
+                        )
+                      ],
+                    ),
+                  ),
                   Flexible(
                     flex: deviceSize.width > 600 ? 2 : 1,
                     child: ProfileCard(),
@@ -204,8 +269,8 @@ class _ProfileCardState extends State<ProfileCard> {
 
   final GlobalKey<FormState> _formKey = GlobalKey();
   Map<String, String> _authData = {
-    'name': '',
-    'address': '',
+    'email': '',
+    'password': '',
   };
   var _isLoading = false;
   final _passwordController = TextEditingController();
@@ -325,30 +390,30 @@ class _ProfileCardState extends State<ProfileCard> {
                   ),
                 ),
                 TextFormField(
-                  decoration: InputDecoration(labelText: 'Name'),
+                  decoration: InputDecoration(labelText: 'FULL NAME'),
                   keyboardType: TextInputType.emailAddress,
                   validator: (value) {
-                    if (value.isEmpty || value.length < 10) {
-                      return 'Invalid Name!';
+                    if (value.isEmpty || !value.contains('@')) {
+                      return 'Invalid email!';
                     }
                     return null;
                   },
                   onSaved: (value) {
-                    _authData['name'] = value;
+                    _authData['email'] = value;
                   },
                 ),
                 TextFormField(
-                  decoration: InputDecoration(labelText: 'Address'),
+                  decoration: InputDecoration(labelText: 'Password'),
                   obscureText: true,
                   controller: _passwordController,
                   validator: (value) {
-                    if (value.isEmpty || value.length < 15) {
-                      return 'Address too short!';
+                    if (value.isEmpty || value.length < 5) {
+                      return 'Password is too short!';
                     }
                     return null;
                   },
                   onSaved: (value) {
-                    _authData['address'] = value;
+                    _authData['password'] = value;
                   },
                 ),
                 SizedBox(
