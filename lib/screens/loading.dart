@@ -25,13 +25,13 @@ class _LoadingState extends State<Loading> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xff005582),
+      backgroundColor: Colors.indigo,
       body: Center(
         child: Container(
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: AssetImage('images/loading.png'),
-              fit: BoxFit.cover,
+              image: AssetImage('images/haanzi-logo.png'),
+              //fit: BoxFit.cover,
             ),
           ),
           child: SpinKitFadingCube(

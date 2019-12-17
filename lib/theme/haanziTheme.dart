@@ -30,7 +30,7 @@ ThemeData basicTheme() {
   return base.copyWith(
       textTheme: _basicTextTheme(base.textTheme),
       //textTheme: Typography().white,
-      primaryColor: Color(0xff00446F),
+      primaryColor: Color(0xff1565C0),
       //primaryColor: Color(0xff4829b2),
       indicatorColor: Color(0xFF97EBDB),
       scaffoldBackgroundColor: Color(0xFFF5F5F5),
@@ -39,7 +39,7 @@ ThemeData basicTheme() {
         color: Colors.white,
         size: 20.0,
       ),
-      buttonColor: Colors.white,
+      buttonColor: Colors.grey[200],
       backgroundColor: Colors.white,
       tabBarTheme: base.tabBarTheme.copyWith(
         labelColor: Color(0xffF8D774),

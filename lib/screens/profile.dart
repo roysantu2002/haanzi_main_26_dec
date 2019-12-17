@@ -88,7 +88,7 @@ class _ProfileScreenState extends State<Profile>
         children: <Widget>[
           SingleChildScrollView(
             child: Container(
-              margin: EdgeInsets.only(top: 100),
+              margin: EdgeInsets.only(top: 50),
               height: deviceSize.height,
               width: deviceSize.width,
               child: Column(
@@ -303,19 +303,15 @@ class _ProfileCardState extends State<ProfileCard> {
                               child: new Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
-                                  new CircleAvatar(
-                                    backgroundColor:
-                                        Theme.of(context).primaryColor,
-                                    radius: 25.0,
-                                    child: IconButton(
-                                      icon: new Icon(
-                                        Icons.camera_alt,
-                                        size: 30.0,
-                                      ),
-                                      onPressed: () {
-                                        getImage();
-                                      },
+                                  IconButton(
+                                    icon: new Icon(
+                                      Icons.camera_alt,
+                                      color: Colors.grey[300],
+                                      size: 30.0,
                                     ),
+                                    onPressed: () {
+                                      getImage();
+                                    },
                                   )
                                 ],
                               )),
