@@ -7,7 +7,9 @@ import 'dart:io';
 import 'package:path/path.dart';
 import 'package:provider/provider.dart';
 import 'package:haanzi_main/models/user.dart';
+import 'package:haanzi_main/common/util.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class Profile extends StatefulWidget {
   @override
@@ -99,6 +101,13 @@ class _ProfileCardState extends State<ProfileCard> {
   String error = '';
   File _image;
 
+  void showLongToast() {
+    Fluttertoast.showToast(
+      msg: "This is Long Toast",
+      toastLength: Toast.LENGTH_LONG,
+    );
+  }
+
   //static File _image;
 
   //static final uid = AuthService().userid();
@@ -117,10 +126,16 @@ class _ProfileCardState extends State<ProfileCard> {
     }*/ /*
   }*/
 
+  Future<void> _signout() {
+    AuthService().signOut();
+  }
+
   final GlobalKey<FormState> _formKey = GlobalKey();
   Map<String, String> _authData = {
     'name': '',
+    'mobile': '',
     'address': '',
+    'pin': '',
   };
   var _isLoading = false;
   //final _passwordController = TextEditingController();
@@ -132,6 +147,13 @@ class _ProfileCardState extends State<ProfileCard> {
     final FirebaseUser currentUser = await _auth.currentUser();
     var uid = currentUser.uid;
     print("AAAAAAAAAAA $uid");
+
+    //String fileName = basename(_image.path);
+
+    //if (_image == null) {
+    //showLongToast();
+    //util.showMessage("Select Profile Image");
+    //}
 
     if (!_formKey.currentState.validate()) {
       // Invalid!
@@ -146,10 +168,14 @@ class _ProfileCardState extends State<ProfileCard> {
       _isLoading = false;
     });
 
+    if (_image == null) {
+      util.showMessage("Set profile image");
+    }
+
     final FirebaseStorage _storage =
         FirebaseStorage(storageBucket: 'gs://haanzi-c7870.appspot.com');
     final String filepath = '/images/profileImages/$uid' + '.png';
-    //String fileName = basename(_image.path);
+
     //print("TODO-01");
     print(filepath);
     /* print(_loader);*/
@@ -286,7 +312,6 @@ class _ProfileCardState extends State<ProfileCard> {
                 ),
                 TextFormField(
                   decoration: InputDecoration(labelText: 'Name'),
-                  keyboardType: TextInputType.emailAddress,
                   validator: (value) {
                     if (value.isEmpty || value.length < 10) {
                       return 'Invalid Name!';
@@ -298,12 +323,27 @@ class _ProfileCardState extends State<ProfileCard> {
                   },
                 ),
                 TextFormField(
+                  decoration: InputDecoration(labelText: 'Mobile'),
+                  //controller: _passwordController,
+                  validator: (value) {
+                    if (value.isEmpty || value.length < 10) {
+                      return 'Mobile Number!';
+                    }
+                    return null;
+                  },
+                  onSaved: (value) {
+                    _authData['mobile'] = value;
+                  },
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                TextFormField(
                   decoration: InputDecoration(labelText: 'Address'),
-                  obscureText: true,
                   //controller: _passwordController,
                   validator: (value) {
                     if (value.isEmpty || value.length < 15) {
-                      return 'Address too short!';
+                      return 'Adress is too short Number!';
                     }
                     return null;
                   },
@@ -314,27 +354,71 @@ class _ProfileCardState extends State<ProfileCard> {
                 SizedBox(
                   height: 10,
                 ),
+                Container(
+                  child: TextFormField(
+                    decoration: InputDecoration(labelText: 'Pin Code'),
+                    //controller: _passwordController,
+                    validator: (value) {
+                      if (value.isEmpty || value.length < 15) {
+                        return 'Pin is too short Number!';
+                      }
+                      return null;
+                    },
+                    onSaved: (value) {
+                      _authData['pin'] = value;
+                    },
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
                 if (_isLoading)
                   CircularProgressIndicator()
                 else
-                  RaisedButton(
-                    child: Text(
-                      'SAVE',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context).indicatorColor,
-                        fontFamily: 'Roboto',
-                      ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: new Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        Expanded(
+                          child: Padding(
+                            padding: EdgeInsets.only(right: 10.0),
+                            child: Container(
+                                child: new RaisedButton(
+                              child: new Text("Save"),
+                              textColor: Colors.white,
+                              color: Colors.green,
+                              onPressed: () {
+                                _submit();
+                              },
+                              shape: new RoundedRectangleBorder(
+                                  borderRadius:
+                                      new BorderRadius.circular(20.0)),
+                            )),
+                          ),
+                          flex: 2,
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding: EdgeInsets.only(right: 10.0),
+                            child: Container(
+                                child: new RaisedButton(
+                              child: new Text("Cancel"),
+                              textColor: Colors.white,
+                              color: Colors.red,
+                              onPressed: () {
+                                _signout();
+                              },
+                              shape: new RoundedRectangleBorder(
+                                  borderRadius:
+                                      new BorderRadius.circular(20.0)),
+                            )),
+                          ),
+                          flex: 2,
+                        ),
+                      ],
                     ),
-                    onPressed: _submit,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 30.0, vertical: 8.0),
-                    color: Theme.of(context).buttonColor,
-                    //color: Theme.of(context).primaryColor,
-                    //textColor: Theme.of(context).textTheme.headline,
                   ),
               ],
             ),
