@@ -1,47 +1,29 @@
+import 'package:haanzi_main/models/user.dart';
 import 'package:haanzi_main/services/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:io';
 import 'package:path/path.dart';
+import 'package:provider/provider.dart';
+import 'package:haanzi_main/models/user.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class Profile extends StatefulWidget {
   @override
   //MapScreenState createState() => MapScreenState();
 
-  final AuthService _auth = AuthService();
-
   _ProfileScreenState createState() => _ProfileScreenState();
 }
-/*
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text('Profile'),
-          backgroundColor: Theme.of(context).primaryColorDark,
-          elevation: 0.0,
-          actions: <Widget>[
-            FlatButton.icon(
-              icon: Icon(Icons.save),
-              label: Text('save'),
-              onPressed: () async {
-                await _auth.signOut();
-              },
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-*/
 
 class _ProfileScreenState extends State<Profile>
     with SingleTickerProviderStateMixin {
   File _image;
+
+  final uid = AuthService().userid();
+  //print("AAAAAAAAAAA $uid");
+
+  // print(currentUser.uid);
 
   bool _status = true;
   final FocusNode myFocusNode = FocusNode();
@@ -62,19 +44,6 @@ class _ProfileScreenState extends State<Profile>
       setState(() {
         _image = image;
         print('Image Path $_image');
-      });
-    }
-
-    Future uploadPic(BuildContext context) async {
-      String fileName = basename(_image.path);
-      StorageReference firebaseStorageRef =
-          FirebaseStorage.instance.ref().child(fileName);
-      StorageUploadTask uploadTask = firebaseStorageRef.putFile(_image);
-      StorageTaskSnapshot taskSnapshot = await uploadTask.onComplete;
-      setState(() {
-        print("Profile Picture uploaded");
-        Scaffold.of(context)
-            .showSnackBar(SnackBar(content: Text('Profile Picture Uploaded')));
       });
     }
 
@@ -112,77 +81,6 @@ class _ProfileScreenState extends State<Profile>
     myFocusNode.dispose();
     super.dispose();
   }
-
-  Widget _getActionButtons() {
-    return Padding(
-      padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 45.0),
-      child: new Row(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          Expanded(
-            child: Padding(
-              padding: EdgeInsets.only(right: 10.0),
-              child: Container(
-                  child: new RaisedButton(
-                child: new Text("Save"),
-                textColor: Colors.white,
-                color: Colors.green,
-                onPressed: () {
-                  setState(() {
-                    _status = true;
-                    //FocusScope.of(context).requestFocus(new FocusNode());
-                  });
-                },
-                shape: new RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(20.0)),
-              )),
-            ),
-            flex: 2,
-          ),
-          Expanded(
-            child: Padding(
-              padding: EdgeInsets.only(left: 10.0),
-              child: Container(
-                  child: new RaisedButton(
-                child: new Text("Cancel"),
-                textColor: Colors.white,
-                color: Colors.red,
-                onPressed: () {
-                  setState(() {
-                    _status = true;
-                    //FocusScope.of(context).requestFocus(new FocusNode());
-                  });
-                },
-                shape: new RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(20.0)),
-              )),
-            ),
-            flex: 2,
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _getEditIcon() {
-    return new GestureDetector(
-      child: new CircleAvatar(
-        backgroundColor: Color(0xff00446F),
-        radius: 14.0,
-        child: new Icon(
-          Icons.edit,
-          color: Colors.white,
-          size: 16.0,
-        ),
-      ),
-      onTap: () {
-        setState(() {
-          _status = false;
-        });
-      },
-    );
-  }
 }
 
 class ProfileCard extends StatefulWidget {
@@ -195,12 +93,29 @@ class ProfileCard extends StatefulWidget {
 }
 
 class _ProfileCardState extends State<ProfileCard> {
-  final AuthService _auth = AuthService();
+  //final AuthService _auth = AuthService();
   bool loading = false;
   bool val = false;
   String error = '';
-
   File _image;
+
+  //static File _image;
+
+  //static final uid = AuthService().userid();
+  //static final String filepath = 'images/$uid' + '.png';
+
+  /* Future<File> loadImage() async {
+    print("Loading....");
+    final _loader =
+        FirebaseStorage.instance.ref().child(filepath).getDownloadURL();
+    print(_loader);
+
+    */ /*   if (_loader != "") {
+      _image = _loader.toString();
+    } else {
+      _image = null;
+    }*/ /*
+  }*/
 
   final GlobalKey<FormState> _formKey = GlobalKey();
   Map<String, String> _authData = {
@@ -208,9 +123,16 @@ class _ProfileCardState extends State<ProfileCard> {
     'address': '',
   };
   var _isLoading = false;
-  final _passwordController = TextEditingController();
+  //final _passwordController = TextEditingController();
 
   Future<void> _submit() async {
+    //var uid = AuthService().userid();
+    //print("AAAAAAAAAAA $uid");
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+    final FirebaseUser currentUser = await _auth.currentUser();
+    var uid = currentUser.uid;
+    print("AAAAAAAAAAA $uid");
+
     if (!_formKey.currentState.validate()) {
       // Invalid!
       return;
@@ -223,9 +145,24 @@ class _ProfileCardState extends State<ProfileCard> {
     setState(() {
       _isLoading = false;
     });
+
+    final FirebaseStorage _storage =
+        FirebaseStorage(storageBucket: 'gs://haanzi-c7870.appspot.com');
+    final String filepath = '/images/profileImages/$uid' + '.png';
+    //String fileName = basename(_image.path);
+    //print("TODO-01");
+    print(filepath);
+    /* print(_loader);*/
+    //_storage = FirebaseStorage(storageBucket: 'gs://haanzi-c7870.appspot.com');
+
+    StorageUploadTask _uploadTask;
+
+    _uploadTask = _storage.ref().child(filepath).putFile(_image);
+
+    print(_storage.ref().child(filepath).getDownloadURL());
   }
 
-  Future getImage() async {
+  Future<void> getImage() async {
     var image = await ImagePicker.pickImage(source: ImageSource.gallery);
 
     setState(() {
@@ -234,22 +171,49 @@ class _ProfileCardState extends State<ProfileCard> {
     });
   }
 
-  Future uploadPic(BuildContext context) async {
+/*  Future uploadPic(BuildContext context) async {
     String fileName = basename(_image.path);
+    FirebaseStorage _storage =
+        FirebaseStorage(storageBucket: 'gs://haanzi-c7870.appspot.com/images');
+
+    StorageUploadTask _uploadTask;
+
     StorageReference firebaseStorageRef =
         FirebaseStorage.instance.ref().child(fileName);
-    StorageUploadTask uploadTask = firebaseStorageRef.putFile(_image);
+
+    // StorageUploadTask uploadTask = firebaseStorageRef.putFile(_image);
+
+    StorageUploadTask uploadTask =
+        _storage.ref().child('images').putFile(_image);
+
     StorageTaskSnapshot taskSnapshot = await uploadTask.onComplete;
     setState(() {
       print("Profile Picture uploaded");
       Scaffold.of(context)
           .showSnackBar(SnackBar(content: Text('Profile Picture Uploaded')));
     });
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
+    final uid = AuthService().userid();
+    print(uid);
+
+    Future<void> _loadImage() async {
+      final FirebaseAuth _auth = FirebaseAuth.instance;
+      final FirebaseUser currentUser = await _auth.currentUser();
+      var uid = currentUser.uid;
+      print("AAAAAAAAAAA $uid");
+    }
+
+    //final uid = AuthService().userid();
+    //print("AAAAAAAAAAA $uid");
+    //print("first build");
+    //final user = Provider.of<User>(context);
     final deviceSize = MediaQuery.of(context).size;
+
+    //print("USER ID: $user");
+
     return Card(
       child: Container(
         color: Colors.white,
@@ -336,7 +300,7 @@ class _ProfileCardState extends State<ProfileCard> {
                 TextFormField(
                   decoration: InputDecoration(labelText: 'Address'),
                   obscureText: true,
-                  controller: _passwordController,
+                  //controller: _passwordController,
                   validator: (value) {
                     if (value.isEmpty || value.length < 15) {
                       return 'Address too short!';
@@ -358,6 +322,7 @@ class _ProfileCardState extends State<ProfileCard> {
                       'SAVE',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
+                        color: Theme.of(context).indicatorColor,
                         fontFamily: 'Roboto',
                       ),
                     ),

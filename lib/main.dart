@@ -26,11 +26,11 @@ import 'package:haanzi_main/screens/loading.dart';
 import 'package:haanzi_main/screens/initial.dart';
 
 void main() => runApp(MaterialApp(
-        title: 'Flutter Demo',
+        /* title: 'Flutter Demo',
         theme: ThemeData(
             primaryColor: Colors.purple[800],
             accentColor: Colors.amber,
-            accentColorBrightness: Brightness.dark),
+            accentColorBrightness: Brightness.dark),*/
         initialRoute: '/',
         routes: {
           '/': (context) => Loading(),

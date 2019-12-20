@@ -30,12 +30,12 @@ class _LoadingState extends State<Loading> {
         child: Container(
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: AssetImage('images/haanzi-logo.png'),
-              //fit: BoxFit.cover,
+              image: AssetImage('images/hannzi-bg.png'),
+              fit: BoxFit.cover,
             ),
           ),
-          child: SpinKitFadingCube(
-            color: Colors.pink,
+          child: SpinKitDualRing(
+            color: Colors.purpleAccent,
             size: 70.0,
           ),
         ),

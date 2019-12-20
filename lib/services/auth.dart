@@ -68,4 +68,9 @@ class AuthService {
       return null;
     }
   }
+
+  Future userid() async {
+    final FirebaseUser currentUser = await _auth.currentUser();
+    return currentUser.uid;
+  }
 }
