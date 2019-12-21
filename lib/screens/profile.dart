@@ -22,7 +22,7 @@ class _ProfileScreenState extends State<Profile>
     with SingleTickerProviderStateMixin {
   File _image;
 
-  final uid = AuthService().userid();
+  final uid = AuthService().getCurrentUser();
   //print("AAAAAAAAAAA $uid");
 
   // print(currentUser.uid);
@@ -222,7 +222,7 @@ class _ProfileCardState extends State<ProfileCard> {
 
   @override
   Widget build(BuildContext context) {
-    final uid = AuthService().userid();
+    final uid = AuthService().getCurrentUser();
     print(uid);
 
     Future<void> _loadImage() async {
