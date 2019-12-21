@@ -18,6 +18,7 @@ class DatabaseService {
       'email': email,
       'mode': mode,
       'date': currDate,
+      'pic': '',
     });
   }
 }

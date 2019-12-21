@@ -73,4 +73,6 @@ class AuthService {
     final FirebaseUser currentUser = await _auth.currentUser();
     return currentUser.uid;
   }
+
+  Future<void> user() async => userid();
 }
