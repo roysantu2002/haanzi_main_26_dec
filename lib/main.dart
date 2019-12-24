@@ -24,18 +24,19 @@ class MyApp extends StatelessWidget {
 import 'package:flutter/material.dart';
 import 'package:haanzi_main/screens/loading.dart';
 import 'package:haanzi_main/screens/initial.dart';
+import 'package:haanzi_main/screens/splashScreen.dart';
 
-void main() => runApp(MaterialApp(
-        /* title: 'Flutter Demo',
+/*void main() => runApp(MaterialApp(
+        */ /* title: 'Flutter Demo',
         theme: ThemeData(
             primaryColor: Colors.purple[800],
             accentColor: Colors.amber,
-            accentColorBrightness: Brightness.dark),*/
+            accentColorBrightness: Brightness.dark),*/ /*
         initialRoute: '/',
         routes: {
           '/': (context) => Loading(),
           '/home': (context) => MyApp(),
-        }));
+        }));*/
 
 /*void main() => runApp(MyApp());
 
@@ -54,3 +55,14 @@ class MyApp extends StatelessWidget {
         });
   }
 }*/
+
+var routes = <String, WidgetBuilder>{
+  "/home": (BuildContext context) => MyApp(),
+};
+
+void main() => runApp(new MaterialApp(
+    theme:
+        ThemeData(primaryColor: Colors.red, accentColor: Colors.yellowAccent),
+    debugShowCheckedModeBanner: false,
+    home: SplashScreen(),
+    routes: routes));

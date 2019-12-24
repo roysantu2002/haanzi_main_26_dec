@@ -6,7 +6,7 @@ ThemeData basicTheme() {
       headline: base.headline.copyWith(
         fontFamily: 'RobotoSlab',
         fontSize: 22.0,
-        color: Colors.black,
+        color: Colors.white,
       ),
       title: base.title.copyWith(
           fontFamily: 'RobotoSlab', fontSize: 15.0, color: Colors.green),
@@ -31,8 +31,8 @@ ThemeData basicTheme() {
   return base.copyWith(
       textTheme: _basicTextTheme(base.textTheme),
       //textTheme: Typography().white,
-      primaryColor: Color(0xff1565C0),
-      accentColor: Color(0xFF61D5E4),
+      primaryColor: Color(0xff005582),
+      accentColor: Color(0xFF00c2c7),
 
       //primaryColor: Color(0xffC1990C),
       //primaryColor: Color(0xff4829b2),
@@ -42,7 +42,7 @@ ThemeData basicTheme() {
         color: Colors.white,
         size: 20.0,
       ),
-      buttonColor: Color(0xff1565C0),
+      buttonColor: Color(0xff0086AD),
       backgroundColor: Colors.white,
       tabBarTheme: base.tabBarTheme.copyWith(
         labelColor: Color(0xffF8D774),
