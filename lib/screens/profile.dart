@@ -1,6 +1,7 @@
 import 'package:haanzi_main/models/user.dart';
 import 'package:haanzi_main/services/auth.dart';
 import 'package:flutter/material.dart';
+import 'package:haanzi_main/services/database.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:io';
@@ -52,6 +53,7 @@ class _ProfileScreenState extends State<Profile>
     return Scaffold(
       appBar: AppBar(
         title: Text('Set Profile'),
+        centerTitle: true,
       ),
 
       // resizeToAvoidBottomInset: false,
@@ -185,7 +187,16 @@ class _ProfileCardState extends State<ProfileCard> {
 
     _uploadTask = _storage.ref().child(filepath).putFile(_image);
 
-    print(_storage.ref().child(filepath).getDownloadURL());
+    var _imageURL = await _storage.ref().child(filepath).getDownloadURL();
+    _authData['pic'] = _imageURL;
+
+    await DatabaseService(uid: uid).updateUserProfile(
+        uid,
+        _authData['pic'],
+        _authData['name'],
+        _authData['mobile'],
+        _authData['address'],
+        _authData['pin']);
   }
 
   Future<void> getImage() async {
@@ -243,8 +254,8 @@ class _ProfileCardState extends State<ProfileCard> {
     return Card(
       child: Container(
         color: Colors.white,
-        margin: EdgeInsets.all(12.0),
-        padding: EdgeInsets.all(12.0),
+        margin: EdgeInsets.all(18.0),
+        padding: EdgeInsets.all(18.0),
         child: Form(
           key: _formKey,
           child: SingleChildScrollView(
@@ -313,7 +324,7 @@ class _ProfileCardState extends State<ProfileCard> {
                 TextFormField(
                   decoration: InputDecoration(labelText: 'Name'),
                   validator: (value) {
-                    if (value.isEmpty || value.length < 10) {
+                    if (value.isEmpty || value.length < 5) {
                       return 'Invalid Name!';
                     }
                     return null;
@@ -326,7 +337,7 @@ class _ProfileCardState extends State<ProfileCard> {
                   decoration: InputDecoration(labelText: 'Mobile'),
                   //controller: _passwordController,
                   validator: (value) {
-                    if (value.isEmpty || value.length < 10) {
+                    if (value.isEmpty || value.length != 10) {
                       return 'Mobile Number!';
                     }
                     return null;
@@ -343,7 +354,7 @@ class _ProfileCardState extends State<ProfileCard> {
                   //controller: _passwordController,
                   validator: (value) {
                     if (value.isEmpty || value.length < 15) {
-                      return 'Adress is too short Number!';
+                      return 'Adress is too short!';
                     }
                     return null;
                   },
@@ -359,7 +370,7 @@ class _ProfileCardState extends State<ProfileCard> {
                     decoration: InputDecoration(labelText: 'Pin Code'),
                     //controller: _passwordController,
                     validator: (value) {
-                      if (value.isEmpty || value.length < 15) {
+                      if (value.isEmpty || value.length < 7) {
                         return 'Pin is too short Number!';
                       }
                       return null;
@@ -386,15 +397,23 @@ class _ProfileCardState extends State<ProfileCard> {
                             padding: EdgeInsets.only(right: 10.0),
                             child: Container(
                                 child: new RaisedButton(
-                              child: new Text("Save"),
-                              textColor: Colors.white,
-                              color: Colors.green,
+                              child: Text(
+                                'SAVE',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: 'Roboto',
+                                    color: Theme.of(context).backgroundColor),
+                              ),
+
+                              //color:  color: Theme.of(context).backgroundColor),
                               onPressed: () {
                                 _submit();
                               },
+
                               shape: new RoundedRectangleBorder(
                                   borderRadius:
                                       new BorderRadius.circular(20.0)),
+                              color: Theme.of(context).buttonColor,
                             )),
                           ),
                           flex: 2,
@@ -404,9 +423,9 @@ class _ProfileCardState extends State<ProfileCard> {
                             padding: EdgeInsets.only(right: 10.0),
                             child: Container(
                                 child: new RaisedButton(
-                              child: new Text("Cancel"),
+                              child: new Text("CANCEL"),
                               textColor: Colors.white,
-                              color: Colors.red,
+                              color: Color(0xff99463c),
                               onPressed: () {
                                 _signout();
                               },

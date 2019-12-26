@@ -20,7 +20,7 @@ class AuthScreen extends StatelessWidget {
 //            decoration: BoxDecoration(
 //              image: DecorationImage(
 //                image: AssetImage('images/home-auth.png'),
-//                fit: BoxFit.cover,
+//                fit: BoxFit.cover,home-auth.png
 //              ),
 //            ),
 //          ),
@@ -40,7 +40,7 @@ class AuthScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   SizedBox(
-                    height: deviceSize.height * 0.20,
+                    height: deviceSize.height * 0.10,
                   ),
                   Flexible(
                     flex: deviceSize.width > 600 ? 2 : 1,
@@ -198,7 +198,8 @@ class _AuthCardState extends State<AuthCard> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Text('Provider'),
-                      Switch(
+                      Switch.adaptive(
+                          activeColor: Theme.of(context).accentColor,
                           value: val,
                           onChanged: (newVal) {
                             onSwitchValueChanged(newVal);
@@ -213,12 +214,13 @@ class _AuthCardState extends State<AuthCard> {
                   CircularProgressIndicator()
                 else
                   RaisedButton(
+                    elevation: 2,
                     child: Text(
                       _authMode == AuthMode.Login ? 'LOGIN' : 'SIGN UP',
                       style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'Roboto',
-                      ),
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'Roboto',
+                          color: Theme.of(context).backgroundColor),
                     ),
                     onPressed: _submit,
                     shape: RoundedRectangleBorder(
@@ -237,6 +239,7 @@ class _AuthCardState extends State<AuthCard> {
                       fontSize: 15.0,
                       letterSpacing: 1,
                       fontWeight: FontWeight.bold,
+                      color: Theme.of(context).accentColor,
                       fontFamily: 'Roboto',
                     ),
                   ),

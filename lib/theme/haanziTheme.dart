@@ -31,9 +31,11 @@ ThemeData basicTheme() {
   return base.copyWith(
       textTheme: _basicTextTheme(base.textTheme),
       //textTheme: Typography().white,
-      primaryColor: Color(0xff005582),
-      accentColor: Color(0xFF00c2c7),
-
+      //primaryColor: Color(0xffCFD0D2),
+      primaryColor: Color(0xff8393AA),
+      //accentColor: Color(0xffCFD0D2),
+      //accentColor: Color(0xff816B4E),
+      accentColor: Color(0xff4f1b05),
       //primaryColor: Color(0xffC1990C),
       //primaryColor: Color(0xff4829b2),
       indicatorColor: Color(0xFFF5F5F5),
@@ -42,7 +44,8 @@ ThemeData basicTheme() {
         color: Colors.white,
         size: 20.0,
       ),
-      buttonColor: Color(0xff0086AD),
+      //buttonColor: Color(0xff816B4E),
+      buttonColor: Color(0xff0ff8393AA),
       backgroundColor: Colors.white,
       tabBarTheme: base.tabBarTheme.copyWith(
         labelColor: Color(0xffF8D774),

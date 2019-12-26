@@ -19,6 +19,29 @@ class DatabaseService {
       'mode': mode,
       'date': currDate,
       'pic': '',
+      'name': '',
+      'mobile': '',
+      'address': '',
+      'pin': '',
     });
+  }
+
+  //update user profile
+
+  // register with email and password
+  Future updateUserProfile(String uid, String pic, String name, String mobile,
+      String address, String pin) async {
+    try {
+      return await userCollection.document(uid).updateData({
+        'pic': pic,
+        'name': name,
+        'mobile': mobile,
+        'address': address,
+        'pin': pin,
+      });
+    } catch (error) {
+      print(error.toString());
+      return null;
+    }
   }
 }
