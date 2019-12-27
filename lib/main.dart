@@ -56,8 +56,8 @@ class MyApp extends StatelessWidget {
   }
 }*/
 
-var routes = <String, WidgetBuilder>{
-  "/home": (BuildContext context) => MyApp(),
+/*var routes = <String, WidgetBuilder>{
+  "/home": (BuildContext context) => Initial(),
 };
 
 void main() => runApp(new MaterialApp(
@@ -65,4 +65,30 @@ void main() => runApp(new MaterialApp(
         ThemeData(primaryColor: Colors.red, accentColor: Colors.yellowAccent),
     debugShowCheckedModeBanner: false,
     home: SplashScreen(),
-    routes: routes));
+    routes: routes));*/
+
+//---------------
+
+void main() => runApp(MyApp());
+
+/*
+var routes = <String, WidgetBuilder>{
+  "/home": (BuildContext context) => Wrapper(),
+};
+*/
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      theme:
+          ThemeData(primaryColor: Colors.red, accentColor: Colors.yellowAccent),
+      debugShowCheckedModeBanner: false,
+      home: SplashScreen(),
+      //initialRoute: '/', // default is '/'
+      routes: {
+        // '/': (ctx) => SplashScreen(),
+        "/home": (ctx) => Initial(),
+      },
+    );
+  }
+}
